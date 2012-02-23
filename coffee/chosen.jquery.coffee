@@ -72,14 +72,14 @@ class Chosen extends AbstractChosen
     @form_field_jq.trigger("liszt:ready", {chosen: this})
 
   register_observers: ->
-    @container.mousedown (evt) => this.container_mousedown(evt)
-    @container.mouseup (evt) => this.container_mouseup(evt)
-    @container.mouseenter (evt) => this.mouse_enter(evt)
-    @container.mouseleave (evt) => this.mouse_leave(evt)
+    # @container.mousedown (evt) => this.container_mousedown(evt)
+    # @container.mouseup (evt) => this.container_mouseup(evt)
+    # @container.mouseenter (evt) => this.mouse_enter(evt)
+    # @container.mouseleave (evt) => this.mouse_leave(evt)
   
-    @search_results.mouseup (evt) => this.search_results_mouseup(evt)
-    @search_results.mouseover (evt) => this.search_results_mouseover(evt)
-    @search_results.mouseout (evt) => this.search_results_mouseout(evt)
+    # @search_results.mouseup (evt) => this.search_results_mouseup(evt)
+    # @search_results.mouseover (evt) => this.search_results_mouseover(evt)
+    # @search_results.mouseout (evt) => this.search_results_mouseout(evt)
 
     @form_field_jq.bind "liszt:updated", (evt) => this.results_update_field(evt)
 
@@ -87,11 +87,11 @@ class Chosen extends AbstractChosen
     @search_field.keyup (evt) => this.keyup_checker(evt)
     @search_field.keydown (evt) => this.keydown_checker(evt)
 
-    if @is_multiple
-      @search_choices.click (evt) => this.choices_click(evt)
-      @search_field.focus (evt) => this.input_focus(evt)
-    else
-      @container.click (evt) => evt.preventDefault() # gobble click of anchor
+    # if @is_multiple
+    #   @search_choices.click (evt) => this.choices_click(evt)
+    #   @search_field.focus (evt) => this.input_focus(evt)
+    # else
+    #   @container.click (evt) => evt.preventDefault() # gobble click of anchor
 
   search_field_disabled: ->
     @is_disabled = @form_field_jq[0].disabled
@@ -105,26 +105,26 @@ class Chosen extends AbstractChosen
       @search_field[0].disabled = false
       @selected_item.bind "focus", @activate_action if !@is_multiple
 
-  container_mousedown: (evt) ->
-    if !@is_disabled
-      target_closelink =  if evt? then ($ evt.target).hasClass "search-choice-close" else false
-      if evt and evt.type is "mousedown"
-        evt.stopPropagation()
-      if not @pending_destroy_click and not target_closelink
-        if not @active_field
-          @search_field.val "" if @is_multiple
-          $(document).click @click_test_action
-          this.results_show()
-        else if not @is_multiple and evt and (($(evt.target)[0] == @selected_item[0]) || $(evt.target).parents("a.chzn-single").length)
-          evt.preventDefault()
-          this.results_toggle()
-
-        this.activate_field()
-      else
-        @pending_destroy_click = false
-
-  container_mouseup: (evt) ->
-    this.results_reset(evt) if evt.target.nodeName is "ABBR"
+  # container_mousedown: (evt) ->
+  #   if !@is_disabled
+  #     target_closelink =  if evt? then ($ evt.target).hasClass "search-choice-close" else false
+  #     if evt and evt.type is "mousedown"
+  #       evt.stopPropagation()
+  #     if not @pending_destroy_click and not target_closelink
+  #       if not @active_field
+  #         @search_field.val "" if @is_multiple
+  #         $(document).click @click_test_action
+  #         this.results_show()
+  #       else if not @is_multiple and evt and (($(evt.target)[0] == @selected_item[0]) || $(evt.target).parents("a.chzn-single").length)
+  #         evt.preventDefault()
+  #         this.results_toggle()
+  # 
+  #       this.activate_field()
+  #     else
+  #       @pending_destroy_click = false
+  # 
+  # container_mouseup: (evt) ->
+  #   this.results_reset(evt) if evt.target.nodeName is "ABBR"
 
   blur_test: (evt) ->
     this.close_field() if not @active_field and @container.hasClass "chzn-container-active"
@@ -206,23 +206,23 @@ class Chosen extends AbstractChosen
       ""
   
   result_do_highlight: (el) ->
-    if el.length
-      this.result_clear_highlight()
-
-      @result_highlight = el
-      @result_highlight.addClass "highlighted"
-
-      maxHeight = parseInt @search_results.css("maxHeight"), 10
-      visible_top = @search_results.scrollTop()
-      visible_bottom = maxHeight + visible_top
-      
-      high_top = @result_highlight.position().top + @search_results.scrollTop()
-      high_bottom = high_top + @result_highlight.outerHeight()
-
-      if high_bottom >= visible_bottom
-        @search_results.scrollTop if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
-      else if high_top < visible_top
-        @search_results.scrollTop high_top
+    # if el.length
+    #   this.result_clear_highlight()
+    # 
+    #   @result_highlight = el
+    #   @result_highlight.addClass "highlighted"
+    # 
+    #   maxHeight = parseInt @search_results.css("maxHeight"), 10
+    #   visible_top = @search_results.scrollTop()
+    #   visible_bottom = maxHeight + visible_top
+    #   
+    #   high_top = @result_highlight.position().top + @search_results.scrollTop()
+    #   high_bottom = high_top + @result_highlight.outerHeight()
+    # 
+    #   if high_bottom >= visible_bottom
+    #     @search_results.scrollTop if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
+    #   else if high_top < visible_top
+    #     @search_results.scrollTop high_top
     
   result_clear_highlight: ->
     @result_highlight.removeClass "highlighted" if @result_highlight
@@ -269,18 +269,18 @@ class Chosen extends AbstractChosen
       @search_field.val("")
       @search_field.removeClass "default"
 
-  search_results_mouseup: (evt) ->
-    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
-    if target.length
-      @result_highlight = target
-      this.result_select(evt)
-
-  search_results_mouseover: (evt) ->
-    target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
-    this.result_do_highlight( target ) if target
-
-  search_results_mouseout: (evt) ->
-    this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
+  # search_results_mouseup: (evt) ->
+  #   target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+  #   if target.length
+  #     @result_highlight = target
+  #     this.result_select(evt)
+  # 
+  # search_results_mouseover: (evt) ->
+  #   target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
+  #   this.result_do_highlight( target ) if target
+  # 
+  # search_results_mouseout: (evt) ->
+  #   this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
 
 
   choices_click: (evt) ->
@@ -383,7 +383,8 @@ class Chosen extends AbstractChosen
     results = 0
 
     searchText = if @search_field.val() is @default_text then "" else $('<div/>').text($.trim(@search_field.val())).html()
-    regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    # regex = new RegExp('^' + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    regex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
 
     for option in @results_data
@@ -410,10 +411,11 @@ class Chosen extends AbstractChosen
           if found
             if searchText.length
               startpos = option.html.search zregex
-              text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
-              text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
+              # text = option.html.substr(0, startpos + searchText.length) + '</em>' + option.html.substr(startpos + searchText.length)
+              # text = text.substr(0, startpos) + '<em>' + text.substr(startpos)
             else
-              text = option.html
+              # text = option.html
+              text = option.text
             
             result.html(text)
             this.result_activate result

@@ -169,7 +169,7 @@ Copyright (c) 2011 by Harvest
         if (option.group_array_index != null) classes.push("group-option");
         if (option.classes !== "") classes.push(option.classes);
         style = option.style.cssText !== "" ? " style=\"" + option.style + "\"" : "";
-        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"' + style + '>' + option.html + '</li>';
+        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"' + style + '>' + option.text + '</li>';
       } else {
         return "";
       }
