@@ -682,10 +682,12 @@ Copyright (c) 2011 by Harvest
         }
       }
       if (results < 1 && searchText.length) {
-        return this.no_results(searchText);
+        this.no_results(searchText);
       } else {
-        return this.winnow_results_set_highlight();
+        this.winnow_results_set_highlight();
       }
+      $('ul.chzn-results li').filter(':visible').filter(':odd').css('background-color', '#f5f5f5');
+      return $('ul.chzn-results li').filter(':visible').filter(':even').css('background-color', '#fff');
     };
 
     Chosen.prototype.winnow_results_clear = function() {

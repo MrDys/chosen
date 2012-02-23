@@ -422,15 +422,18 @@ class Chosen extends AbstractChosen
             result.html(text)
             this.result_activate result
 
-            $("#" + @results_data[option.group_array_index].dom_id).css('display', 'list-item') if option.group_array_index?
+            $("#" + @results_data[option.group_array_index].dom_id).css('display', 'list-item') if option.group_array_index?                 
           else
             this.result_clear_highlight() if @result_highlight and result_id is @result_highlight.attr 'id'
-            this.result_deactivate result
+            this.result_deactivate result       
 
     if results < 1 and searchText.length
       this.no_results searchText
     else
       this.winnow_results_set_highlight()
+
+    $('ul.chzn-results li').filter(':visible').filter(':odd').css('background-color','#f5f5f5')
+    $('ul.chzn-results li').filter(':visible').filter(':even').css('background-color','#fff')
 
   winnow_results_clear: ->
     @search_field.val ""
