@@ -395,13 +395,15 @@ class Chosen extends AbstractChosen
           found = false
           result_id = option.dom_id
           result = $("#" + result_id)
-          
-          if regex.test option.html
+          text_without_tags = option.text.replace(/<\/?[^>]+>/gi, '');
+					
+
+          if regex.test text_without_tags
             found = true
             results += 1
-          else if option.html.indexOf(" ") >= 0 or option.html.indexOf("[") == 0
+          else if text_without_tags.indexOf(" ") >= 0 or text_without_tags.indexOf("[") == 0
             #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
-            parts = option.html.replace(/\[|\]/g, "").split(" ")
+            parts = text_without_tags.replace(/\[|\]/g, "").split(" ")
             if parts.length
               for part in parts
                 if regex.test part
